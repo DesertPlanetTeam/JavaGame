@@ -3,9 +3,6 @@ package com.company;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-/**
- * Created by User on 10.11.2015 ã..
- */
 public class Player {
 
     private double x;

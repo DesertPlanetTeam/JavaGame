@@ -3,9 +3,6 @@ package com.company;
 import java.awt.*;
 import java.util.LinkedList;
 
-/**
- * Created by User on 10.11.2015 ã..
- */
 public class Controller {
 
     private LinkedList<Bullet> b = new LinkedList<Bullet>();
