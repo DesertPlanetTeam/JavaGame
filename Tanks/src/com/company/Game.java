@@ -133,13 +133,13 @@ public class Game extends Canvas implements Runnable{
         int key = e.getKeyCode();
 
         if(key == KeyEvent.VK_RIGHT){
-            p.setVelX(5);
+            p.setVelX(3);
         } else if(key == KeyEvent.VK_LEFT){
-            p.setVelX(-5);
+            p.setVelX(-3);
         }else if(key == KeyEvent.VK_DOWN){
-            p.setVelY(5);
+            p.setVelY(3);
         }else if(key == KeyEvent.VK_UP){
-            p.setVelY(-5);
+            p.setVelY(-3);
         }else if(key == KeyEvent.VK_SPACE && !is_shooting){
             is_shooting = true;
             c.addBullet(new Bullet(p.getX(), p.getY(), this));
