@@ -19,6 +19,9 @@ public class Game extends Canvas implements Runnable{
     private boolean running = false;
     private Thread thread;
 
+    private int enemy_count = 1;
+    private int enemy_killed = 0;
+
     private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
     private BufferedImage spriteSheet = null;
     private BufferedImage background = null;
@@ -27,6 +30,7 @@ public class Game extends Canvas implements Runnable{
     private boolean is_shooting = false;
     private Player p;
     private Controller c;
+    private Textures tex;
 
     public void init(){
         requestFocus();
@@ -39,10 +43,14 @@ public class Game extends Canvas implements Runnable{
             e.printStackTrace();
         }
 
-        addKeyListener(new KeyInput(this));
+        this.addKeyListener(new KeyInput(this));
 
-        p = new Player(200, 200, this);
-        c = new Controller(this);
+        tex = new Textures(this);
+
+        p = new Player(200, 200, tex);
+        c = new Controller(tex);
+
+        c.createEnemy(enemy_count);
     }
 
     private synchronized void start(){
@@ -105,7 +113,6 @@ public class Game extends Canvas implements Runnable{
     private void tick(){
         p.tick();
         c.tick();
-
     }
 
     private void render(){
@@ -119,7 +126,7 @@ public class Game extends Canvas implements Runnable{
         Graphics g = bs.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 
-        g.drawImage(background, 0, 0, null);
+        g.drawImage(background, 0, 0, this);
 
         p.render(g);
         c.render(g);
@@ -133,16 +140,16 @@ public class Game extends Canvas implements Runnable{
         int key = e.getKeyCode();
 
         if(key == KeyEvent.VK_RIGHT){
-            p.setVelX(3);
+            p.setVelX(5);
         } else if(key == KeyEvent.VK_LEFT){
-            p.setVelX(-3);
+            p.setVelX(-5);
         }else if(key == KeyEvent.VK_DOWN){
-            p.setVelY(3);
+            p.setVelY(5);
         }else if(key == KeyEvent.VK_UP){
-            p.setVelY(-3);
+            p.setVelY(-5);
         }else if(key == KeyEvent.VK_SPACE && !is_shooting){
             is_shooting = true;
-            c.addBullet(new Bullet(p.getX(), p.getY(), this));
+            c.addEntity(new Bullet(p.getX(), p.getY(), tex));
         }
     }
 
@@ -184,6 +191,20 @@ public class Game extends Canvas implements Runnable{
         return spriteSheet;
     }
 
+    public int getEnemy_count() {
+        return enemy_count;
+    }
 
+    public void setEnemy_count(int enemy_count) {
+        this.enemy_count = enemy_count;
+    }
+
+    public int getEnemy_killed() {
+        return enemy_killed;
+    }
+
+    public void setEnemy_killed(int enemy_killed) {
+        this.enemy_killed = enemy_killed;
+    }
 }
 

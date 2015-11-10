@@ -13,14 +13,13 @@ public class Player {
 
     private BufferedImage player;
 
-    public Player(double x, double y, Game game){
+    Textures tex;
+
+    public Player(double x, double y, Textures tex){
 
         this.x = x;
         this.y = y;
-
-        SpriteSheet ss = new SpriteSheet(game.getSpriteSheet());
-
-        player = ss.grabImage(1, 1, 32, 32);
+        this.tex = tex;
     }
 
     public void tick(){
@@ -42,7 +41,7 @@ public class Player {
     }
 
     public void render(Graphics g){
-        g.drawImage(player, (int)x, (int)y, null);
+        g.drawImage(tex.player, (int)x, (int)y, null);
     }
 
     public double getX(){

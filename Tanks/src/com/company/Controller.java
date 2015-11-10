@@ -2,42 +2,46 @@ package com.company;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Controller {
 
-    private LinkedList<Bullet> b = new LinkedList<Bullet>();
+    private LinkedList<Entity> e = new LinkedList<Entity>();
 
-    Bullet TempBullet;
+    Entity ent;
+    private Textures tex;
+    Random r = new Random();
 
-    Game game;
+    public Controller(Textures tex) {
+        this.tex = tex;
+    }
 
-    public Controller(Game game){
-        this.game = game;
+    public void createEnemy(int enemy_count) {
+        for (int i = 0; i < enemy_count; i++) {
+            addEntity(new Enemy(r.nextInt(640), -10, tex));
+        }
     }
 
     public void tick(){
-        for (int i = 0; i < b.size(); i++) {
-            TempBullet = b.get(i);
+        for (int i = 0; i < e.size(); i++) {
+            ent = e.get(i);
 
-            if(TempBullet.getY()<0){
-                removeBullet(TempBullet);
-            }
-            TempBullet.tick();
+            ent.tick();
         }
     }
 
     public void render (Graphics g){
-        for (int i = 0; i < b.size(); i++) {
-            TempBullet = b.get(i);
+        for (int i = 0; i < e.size(); i++) {
+            ent = e.get(i);
 
-            TempBullet.render(g);
+            ent.tick();
         }
     }
 
-    public void addBullet(Bullet block){
-        b.add(block);
+    public void addEntity(Entity block) {
+        e.add(block);
     }
-    public void removeBullet(Bullet block){
-        b.remove(block);
+    public void removeEntity(Entity block) {
+        e.remove(block);
     }
 }
