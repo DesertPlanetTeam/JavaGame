@@ -1,25 +1,29 @@
 package com.company;
 
+import com.game.src.main.classes.EntityA;
+import com.game.src.main.classes.EntityB;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Player {
+public class Player extends GameObject implements EntityA{
 
-    private double x;
-    private double y;
 
     private double velX = 0;
     private double velY = 0;
 
     private BufferedImage player;
 
-    Textures tex;
+    private Textures tex;
+    Game game;
+    Controller controller;
 
-    public Player(double x, double y, Textures tex){
+    public Player(double x, double y, Textures tex, Game game, Controller controller){
 
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.tex = tex;
+        this.game = game;
+        this.controller = controller;
     }
 
     public void tick(){
@@ -38,10 +42,25 @@ public class Player {
         if (y >= 480 - 32){
             y = 480 - 32;
         }
+
+        for (int i = 0; i < game.eb.size(); i++) {
+            EntityB tempEnt = game.eb.get(i);
+
+            if(Physics.Collision(this, tempEnt)){
+                controller.removeEntity(tempEnt);
+                Game.HEALTH -= 10;
+                game.setEnemy_killed(game.getEnemy_killed() + 1);
+            }
+
+        }
     }
 
     public void render(Graphics g){
         g.drawImage(tex.player, (int)x, (int)y, null);
+    }
+
+    public Rectangle getBounds(){
+        return new Rectangle((int)x, (int)y, 32, 32);
     }
 
     public double getX(){

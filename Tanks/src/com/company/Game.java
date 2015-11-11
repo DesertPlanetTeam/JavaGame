@@ -1,10 +1,14 @@
 package com.company;
 
+import com.game.src.main.classes.EntityA;
+import com.game.src.main.classes.EntityB;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
@@ -19,18 +23,32 @@ public class Game extends Canvas implements Runnable{
     private boolean running = false;
     private Thread thread;
 
-    private int enemy_count = 1;
-    private int enemy_killed = 0;
-
     private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
     private BufferedImage spriteSheet = null;
     private BufferedImage background = null;
 
 
     private boolean is_shooting = false;
+
+    private int enemy_count = 5;
+    private int enemy_killed = 0;
+
     private Player p;
     private Controller c;
     private Textures tex;
+    private Menu menu;
+
+    public LinkedList<EntityA> ea;
+    public LinkedList<EntityB> eb;
+
+    public static int HEALTH = 100 * 2;
+
+    public static enum STATE{
+        MENU,
+        GAME
+    };
+
+    public static STATE State = STATE.MENU;
 
     public void init(){
         requestFocus();
@@ -43,12 +61,17 @@ public class Game extends Canvas implements Runnable{
             e.printStackTrace();
         }
 
+        tex = new Textures(this);
+        c = new Controller(tex, this);
+        p = new Player(200, 200, tex, this, c);
+        menu = new Menu();
+
+        ea = c.getEntityA();
+        eb = c.getEntityB();
+
         this.addKeyListener(new KeyInput(this));
 
-        tex = new Textures(this);
-
-        p = new Player(200, 200, tex);
-        c = new Controller(tex);
+        this.addMouseListener(new MouseInput());
 
         c.createEnemy(enemy_count);
     }
@@ -111,8 +134,16 @@ public class Game extends Canvas implements Runnable{
 
 
     private void tick(){
-        p.tick();
-        c.tick();
+        if(State == STATE.GAME) {
+            p.tick();
+            c.tick();
+        }
+
+        if(enemy_killed >= enemy_count){
+            enemy_count +=2;
+            enemy_killed = 0;
+            c.createEnemy(enemy_count);
+        }
     }
 
     private void render(){
@@ -128,8 +159,22 @@ public class Game extends Canvas implements Runnable{
 
         g.drawImage(background, 0, 0, this);
 
-        p.render(g);
-        c.render(g);
+        if(State == STATE.GAME) {
+            p.render(g);
+            c.render(g);
+
+            g.setColor(Color.red);
+            g.fillRect(5, 5, 200, 50);
+
+            g.setColor(Color.green);
+            g.fillRect(5, 5, HEALTH, 50);
+
+            g.setColor(Color.white);
+            g.drawRect(5, 5, 200, 50);
+
+        }else if(State == STATE.MENU){
+            menu.render(g);
+        }
 
         g.dispose();
         bs.show();
@@ -138,18 +183,19 @@ public class Game extends Canvas implements Runnable{
     public void keyPressed(KeyEvent e){
 
         int key = e.getKeyCode();
-
-        if(key == KeyEvent.VK_RIGHT){
-            p.setVelX(5);
-        } else if(key == KeyEvent.VK_LEFT){
-            p.setVelX(-5);
-        }else if(key == KeyEvent.VK_DOWN){
-            p.setVelY(5);
-        }else if(key == KeyEvent.VK_UP){
-            p.setVelY(-5);
-        }else if(key == KeyEvent.VK_SPACE && !is_shooting){
-            is_shooting = true;
-            c.addEntity(new Bullet(p.getX(), p.getY(), tex));
+        if(State == STATE.GAME) {
+            if (key == KeyEvent.VK_RIGHT) {
+                p.setVelX(5);
+            } else if (key == KeyEvent.VK_LEFT) {
+                p.setVelX(-5);
+            } else if (key == KeyEvent.VK_DOWN) {
+                p.setVelY(5);
+            } else if (key == KeyEvent.VK_UP) {
+                p.setVelY(-5);
+            } else if (key == KeyEvent.VK_SPACE && !is_shooting) {
+                c.addEntity(new Bullet(p.getX(), p.getY() + 20, tex, this));
+                is_shooting = true;
+            }
         }
     }
 
