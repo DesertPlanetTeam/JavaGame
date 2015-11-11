@@ -25,7 +25,7 @@ public class Bullet extends GameObject implements EntityA {
     }
 
     public void render (Graphics g){
-        g.drawImage(tex.missile, (int)x, (int)y, null);
+        g.drawImage(tex.laser, (int)x, (int)y, null);
     }
 
     public double getY(){
