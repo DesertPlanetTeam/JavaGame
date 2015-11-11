@@ -12,7 +12,7 @@ public class Enemy extends GameObject implements EntityB {
     private Textures tex;
     Random r = new Random();
     private Game game;
-    private Controller c;
+    public Controller c;
 
     private int speed = r.nextInt(3) + 1;
 

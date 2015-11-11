@@ -21,6 +21,7 @@ public class Game extends Canvas implements Runnable{
     public final String TITLE = "Tanks";
 
     private boolean running = false;
+    public boolean inGame;
     private Thread thread;
 
     private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
@@ -30,8 +31,8 @@ public class Game extends Canvas implements Runnable{
 
     private boolean is_shooting = false;
 
-    private int enemy_count = 5;
-    private int enemy_killed = 0;
+    public int enemy_count = 5;
+    public int enemy_killed = 0;
 
     private Player p;
     private Controller c;
@@ -41,7 +42,7 @@ public class Game extends Canvas implements Runnable{
     public LinkedList<EntityA> ea;
     public LinkedList<EntityB> eb;
 
-    public static int HEALTH = 100 * 2;
+    public static int HEALTH = 100;
 
     public static enum STATE{
         MENU,
@@ -63,7 +64,7 @@ public class Game extends Canvas implements Runnable{
 
         tex = new Textures(this);
         c = new Controller(tex, this);
-        p = new Player(200, 200, tex, this, c);
+        p = new Player(WIDTH, WIDTH*2, tex, this, c);
         menu = new Menu();
 
         ea = c.getEntityA();
@@ -100,6 +101,7 @@ public class Game extends Canvas implements Runnable{
     }
 
     public void run(){
+        inGame = true;
         init();
         long lastTime = System.nanoTime();
         final double amountOfTicks = 60.0;
@@ -160,17 +162,18 @@ public class Game extends Canvas implements Runnable{
         g.drawImage(background, 0, 0, this);
 
         if(State == STATE.GAME) {
+
             p.render(g);
             c.render(g);
 
             g.setColor(Color.red);
-            g.fillRect(5, 5, 200, 50);
+            g.fillRect(5, 5, 100, 50);
 
             g.setColor(Color.green);
             g.fillRect(5, 5, HEALTH, 50);
 
             g.setColor(Color.white);
-            g.drawRect(5, 5, 200, 50);
+            g.drawRect(5, 5, 100, 50);
 
         }else if(State == STATE.MENU){
             menu.render(g);
@@ -195,6 +198,8 @@ public class Game extends Canvas implements Runnable{
             } else if (key == KeyEvent.VK_SPACE && !is_shooting) {
                 c.addEntity(new Bullet(p.getX(), p.getY() + 20, tex, this));
                 is_shooting = true;
+            }else if(key == KeyEvent.VK_ESCAPE){
+                State = STATE.MENU;
             }
         }
     }
@@ -212,6 +217,7 @@ public class Game extends Canvas implements Runnable{
             p.setVelY(0);
         }else if(key == KeyEvent.VK_SPACE){
             is_shooting = false;
+
         }
     }
 

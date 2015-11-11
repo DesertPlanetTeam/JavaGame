@@ -2,6 +2,7 @@ package com.company;
 
 import com.game.src.main.classes.EntityA;
 import com.game.src.main.classes.EntityB;
+import com.sun.glass.ui.EventLoop;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -50,8 +51,19 @@ public class Player extends GameObject implements EntityA{
                 controller.removeEntity(tempEnt);
                 Game.HEALTH -= 10;
                 game.setEnemy_killed(game.getEnemy_killed() + 1);
-            }
 
+                if(Game.HEALTH == 0){
+
+                    game.inGame = false;
+                    Game.State = Game.STATE.GAME.MENU;
+                    Game.HEALTH = 100;
+                    game.enemy_count = 5;
+                    game.enemy_killed = 0;
+                    game.run();
+
+
+                }
+            }
         }
     }
 
