@@ -49,14 +49,14 @@ public class Player extends GameObject implements EntityA{
 
             if(Physics.Collision(this, tempEnt)){
                 controller.removeEntity(tempEnt);
-                Game.HEALTH -= 10;
+                Game.HEALTH -= 20;
                 game.setEnemy_killed(game.getEnemy_killed() + 1);
 
                 if(Game.HEALTH == 0){
 
                     game.inGame = false;
                     Game.State = Game.STATE.GAME.MENU;
-                    Game.HEALTH = 100;
+                    Game.HEALTH = 200;
                     game.enemy_count = 5;
                     game.enemy_killed = 0;
                     game.run();

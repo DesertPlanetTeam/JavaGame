@@ -41,12 +41,8 @@ public class Enemy extends GameObject implements EntityB {
                 c.removeEntity(this);
                 game.setEnemy_killed(game.getEnemy_killed() + 1);
             }
-
         }
-
-
     }
-
 
     public void render(Graphics g) {
         g.drawImage(tex.enemy, (int)x, (int) y, null);
