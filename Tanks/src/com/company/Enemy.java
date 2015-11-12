@@ -39,6 +39,7 @@ public class Enemy extends GameObject implements EntityB {
             {
                 c.removeEntity(tempEnt);
                 c.removeEntity(this);
+                game.score += 5;
                 game.setEnemy_killed(game.getEnemy_killed() + 1);
             }
         }

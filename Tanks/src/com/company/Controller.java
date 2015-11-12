@@ -4,13 +4,14 @@ import com.game.src.main.classes.EntityA;
 import com.game.src.main.classes.EntityB;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
 public class Controller {
 
-    private LinkedList<EntityA> ea = new LinkedList<EntityA>();
-    private LinkedList<EntityB> eb = new LinkedList<EntityB>();
+    private ArrayList<EntityA> ea = new ArrayList<EntityA>();
+    private ArrayList<EntityB> eb = new ArrayList<EntityB>();
 
     EntityA enta;
     EntityB entb;
@@ -69,10 +70,10 @@ public class Controller {
         eb.remove(block);
     }
 
-    public LinkedList<EntityA> getEntityA(){
+    public ArrayList<EntityA> getEntityA(){
         return ea;
     }
-    public LinkedList<EntityB> getEntityB(){
+    public ArrayList<EntityB> getEntityB(){
         return eb;
     }
 }

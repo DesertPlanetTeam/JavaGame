@@ -19,4 +19,11 @@ public class Textures {
         laser = ss.grabImage(2, 1, 32, 32);
         enemy = ss.grabImage(3, 1, 32, 32);
     }
+
+    public void setPlayerTexturesLeftAndRight() {
+        player = ss.grabImage(8, 2, 32, 32);
+    }
+    public void setPlayerTexturesFrontAndBack() {
+        player = ss.grabImage(1, 1, 32, 32);
+    }
 }

@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -31,6 +31,7 @@ public class Game extends Canvas implements Runnable{
 
     private boolean is_shooting = false;
 
+    public int score = 0;
     public int enemy_count = 5;
     public int enemy_killed = 0;
 
@@ -39,8 +40,8 @@ public class Game extends Canvas implements Runnable{
     private Textures tex;
     private Menu menu;
 
-    public LinkedList<EntityA> ea;
-    public LinkedList<EntityB> eb;
+    public ArrayList<EntityA> ea;
+    public ArrayList<EntityB> eb;
 
     public static int HEALTH = 200;
 
@@ -175,6 +176,12 @@ public class Game extends Canvas implements Runnable{
             g.setColor(Color.white);
             g.drawRect(5, 5, 200, 50);
 
+            //player score
+            Font fnt1 = new Font("arial", Font.ITALIC, 25);
+            g.setColor(Color.WHITE);
+            g.setFont(fnt1);
+            g.drawString("Score: " + score, 500, 40);
+
         }else if(State == STATE.MENU){
             menu.render(g);
         }
@@ -188,12 +195,17 @@ public class Game extends Canvas implements Runnable{
         int key = e.getKeyCode();
         if(State == STATE.GAME) {
             if (key == KeyEvent.VK_RIGHT) {
+                //tex.setPlayerTexturesLeftAndRight();
                 p.setVelX(5);
             } else if (key == KeyEvent.VK_LEFT) {
+               // tex.setPlayerTexturesLeftAndRight();
                 p.setVelX(-5);
             } else if (key == KeyEvent.VK_DOWN) {
+                //tex.setPlayerTexturesFrontAndBack();
                 p.setVelY(5);
             } else if (key == KeyEvent.VK_UP) {
+                //if(KeyEvent.KEY_RELEASED)
+               // tex.setPlayerTexturesFrontAndBack();
                 p.setVelY(-5);
             } else if (key == KeyEvent.VK_SPACE && !is_shooting) {
                 c.addEntity(new Bullet(p.getX(), p.getY() + 20, tex, this));
